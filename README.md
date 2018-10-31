@@ -5,3 +5,5 @@ Download link: https://raw.githubusercontent.com/maridonkers/n26csv/master/n26-c
 (right click, save as n26-csv)
 
 It's a command line program, which can be executed via Lumo ( https://github.com/anmonteiro/lumo ).
+
+Also see blog article: http://www.photonsphere.org/posts-output/2018-11-01-n26csv/
