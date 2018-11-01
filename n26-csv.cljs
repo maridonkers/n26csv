@@ -3,7 +3,7 @@
 ;; Converts N26 2018 CSV-file format (as exported by N26 banking) to
 ;; an KMyMoney importable format.
 ;;
-;; Version 0.0.1
+;; Version 0.0.2
 ;;
 ;; Requires Lumo -- https://github.com/anmonteiro/lumo
 ;;
@@ -51,8 +51,7 @@
 
 (s/def ::date (s/and string?
                      #(<= (count %) 10)
-                     (s/or :empty #(= (count %) 0)
-                           :date #(re-matches DATE-REGEXP %))))
+                     #(re-matches DATE-REGEXP %)))
 
 (s/def ::amount-eur (s/and string? #(re-matches AMOUNT-REGEXP %)))
 
