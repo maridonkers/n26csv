@@ -3,7 +3,7 @@
 ;; Converts N26 2018 CSV-file format (as exported by N26 banking) to
 ;; an KMyMoney importable format.
 ;;
-;; Version 0.0.3
+;; Version 0.0.4
 ;;
 ;; Requires Lumo -- https://github.com/anmonteiro/lumo
 ;;
@@ -163,7 +163,7 @@
 
     (str (when (seq account-number) (str "[" account-number "] "))
          (str payment-reference
-              (when (seq extra) (str " " extra))))))
+              (when (seq extra) (str (when (seq payment-reference) " ") extra))))))
 
 (defn convert-columns
   "Converts columns in input CSV line to columns in output CSV line."
