@@ -3,7 +3,7 @@
 ;; Converts N26 2018 CSV-file format (as exported by N26 banking) to
 ;; an KMyMoney importable format.
 ;;
-;; Version 0.0.2
+;; Version 0.0.3
 ;;
 ;; Requires Lumo -- https://github.com/anmonteiro/lumo
 ;;
@@ -72,8 +72,8 @@
 (s/def ::category string?)
 
 ;; "Date","Payee","Account number","Transaction type","Payment reference","Category","Amount (EUR)","Amount (Foreign Currency)","Type Foreign Currency","Exchange Rate"
-;; "2018-09-20","Business Inc.","NL00RABO0123456789","Income","Ping","Miscellaneous","0.01","","",""
-;; "2018-09-20","Business Inc.","NL00RABO0123456789","Outgoing Transfer","Pong","Miscellaneous","-0.01","","",""
+;; "2018-09-20","Business Inc.","NL00RABO0123456789","Income","Ping","Miscellaneous","0.88","1.0","USD","0.8821879"
+;; "2018-09-20","Business Inc.","NL00RABO0123456789","Outgoing Transfer","Pong","Miscellaneous","-0.88","-1.0","USD","0.8821879"
 
 ;; Veld	Omschrijving			Type		Lengte	Inhoud/Toelichting
 (s/def ::csv-columns
@@ -103,7 +103,7 @@
    ;; 8	AMOUNT_FOREIGN_CURRENCY		Numeriek	n/a	Prefix +/-; decimals are represented with a point (.)
    :8 ::amount-foreign
 
-   ;; 9	TYPE_FOREIGN_CURRENCY		Alfanumeriek	n/a	Prefix +/-; decimals are represented with a point (.)
+   ;; 9	TYPE_FOREIGN_CURRENCY		Alfanumeriek	n/a	Type of currency (e.g. EUR, USD, etc.).
    :9 ::currency-type
 
    ;; 10 EXCHANGE_RATE			Numeriek	n/a	Decimals are represented with a point (.)
@@ -165,12 +165,6 @@
          (str payment-reference
               (when (seq extra) (str " " extra))))))
 
-#_(defn convert-date
-  "Converts date from EEJJ-DD-MM to EEJJ-MM-DD."
-  [date]
-  (let [[_ yyyy dd mm] (re-matches DATE-REGEXP date)]
-    (str yyyy "-" mm "-" dd)))
-
 (defn convert-columns
   "Converts columns in input CSV line to columns in output CSV line."
   [csv]
@@ -184,7 +178,7 @@
          _ _ _] csv
         
         result [""
-                date #_(convert-date date)
+                date
                 amount
                 ""
                 payee
