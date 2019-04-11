@@ -3,7 +3,7 @@
 ;; Converts N26 2018 CSV-file format (as exported by N26 banking) to
 ;; an KMyMoney importable format.
 ;;
-;; Version 0.0.5
+;; Version 0.1.0
 ;;
 ;; Requires Lumo -- https://github.com/anmonteiro/lumo
 ;;
@@ -181,8 +181,8 @@
 
   (let [[date
          payee
-         account-number
-         transaction-type
+         _
+         _
          _ _
          amount
          _ _ _] csv
