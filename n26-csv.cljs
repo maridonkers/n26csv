@@ -3,7 +3,7 @@
 ;; Converts N26 2018 CSV-file format (as exported by N26 banking) to
 ;; an KMyMoney importable format.
 ;;
-;; Version 0.0.4
+;; Version 0.0.5
 ;;
 ;; Requires Lumo -- https://github.com/anmonteiro/lumo
 ;;
@@ -147,14 +147,24 @@
 
   (let [[_ _
          account-number
-         _
+         transaction-type
          payment-reference
-         _ _
+         category
+         _
          amount-foreign-currency
          type-foreign-currency
          exchange-rate] cvs
 
-        extra (->> [amount-foreign-currency type-foreign-currency exchange-rate]
+        transaction-type (if (str/blank? transaction-type)
+                           transaction-type
+                           (str transaction-type "; "))
+        
+        category (if (str/blank? category)
+                   category
+                   (str category "; "))
+
+        extra (->> [transaction-type category
+                    amount-foreign-currency type-foreign-currency exchange-rate]
                    (map str/trim)
                    (interpose " ")
                    (filter #(seq %))
